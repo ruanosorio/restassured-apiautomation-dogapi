@@ -16,17 +16,13 @@ public class ValidarConsultasApiBreedsTest {
 
         @Test
         @Description("Deve retornar uma lista de todas as raças de cachorros com sucesso")
-        public void testListarTodasRacas(){
+        public void testListarTodasRacas() {
             Response response = breedClient.getListaRacas();
             BreedsDTO breedsDTOResponse = response.as(BreedsDTO.class);
 
             assertThat(response.getStatusCode(), is(200));
             assertThat(breedsDTOResponse.getMessage(), notNullValue());
             assertThat(breedsDTOResponse.getStatus(), equalTo("success"));
-<<<<<<< HEAD
-=======
-
->>>>>>> e73f80f (criando a classe BreedsClient com os metodos GETs da API e a classe DTO para validação do response)
         }
 
 }

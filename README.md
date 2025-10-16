@@ -34,7 +34,7 @@ gradle test --info
 ```
 
 ## Exemplo para execução de uma classe de testes específica de um pacote:
-]```
+```
 gradle test --tests "funcional.NOME_DA_CLASSE"
 ```
 

@@ -48,14 +48,6 @@ jobs:
         path: build/allure-results/
         retention-days: 30
         
-    - name: Upload do relatório Allure
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: relatorio-allure
-        path: build/reports/allure-report/
-        retention-days: 30
-        
     - name: Adicionar resumo dos testes
       if: always()
       run: |

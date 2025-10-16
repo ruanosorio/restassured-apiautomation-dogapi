@@ -25,4 +25,28 @@ public class ValidarConsultasApiBreedsTest {
             assertThat(breedsDTOResponse.getStatus(), equalTo("success"));
         }
 
+        @Test
+        @Description("Deve retornar uma lista de imagens de raças especificas com sucesso")
+        public void testConsultarImagensPorRaca() {
+            Response response = breedClient.getConsultaImagensPorRaca("dachshund");
+            BreedsDTO breedsDTOResponse = response.as(BreedsDTO.class);
+
+            assertThat(response.getStatusCode(), is(200));
+            assertThat(breedsDTOResponse.getStatus(), equalTo("success"));
+            assertThat(breedsDTOResponse.getMessage(), notNullValue());
+            assertThat(breedsDTOResponse.getMessage().toString(), containsString("dachshund"));
+        }
+
+        @Test
+        @Description("Deve retornar uma imagem de raça aleatória com sucesso")
+        public void testConsultaImagensDeRacasAleatorias() {
+            Response response = breedClient.getImagensAleatorias();
+            BreedsDTO breedsDTOResponse = response.as(BreedsDTO.class);
+
+            assertThat(response.getStatusCode(), is(200));
+            assertThat(breedsDTOResponse.getMessage(), notNullValue());
+            assertThat(breedsDTOResponse.getStatus(), equalTo("success"));
+            assertThat(breedsDTOResponse.getMessage().toString(), startsWith("https://images.dog.ceo/breeds/"));
+        }
+
 }

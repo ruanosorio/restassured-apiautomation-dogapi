@@ -9,8 +9,11 @@
             <package name="funcional"/>
         </packages>
     </test>
-<<<<<<< HEAD
 
-=======
->>>>>>> e73f80f (criando a classe BreedsClient com os metodos GETs da API e a classe DTO para validação do response)
+    <test name="Testes Contrato">
+        <packages>
+            <package name="contrato"/>
+        </packages>
+    </test>
+
 </suite>

@@ -15,14 +15,13 @@ Este projeto tem como objetivo realizar testes automatizados de backend na API p
 - ├── main/
 - │ ├── java/
 - │ │ ├── client/ # Requisições para a API
-- │ │ ├── dataprovider/ # Fontes de dados para os testes
 - │ │ ├── dto/ # Objetos para transferir dados entre diferentes camadas
 - │ │ ├── spec/ # Especificações e configurações do RestAssured
 - │ │ └── utils/ # Classe base e utilitários
 - │ └── resources/
 - ├── test/
 - │ ├── java/
-- │ │ ├── contract/ # Testes de contrato (validação de schema)
+- │ │ ├── contrato/ # Testes de contrato (validação de schema)
 - │ │ ├── funcional/ # Testes funcionais da API
 - │ └── resources/
 - │ └── json_schemas/ # Schemas JSON para validação de testes de contrato

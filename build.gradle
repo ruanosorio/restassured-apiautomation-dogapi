@@ -24,6 +24,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-testng
     testImplementation 'io.qameta.allure:allure-testng:2.30.0'
+
+    // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
+    testImplementation 'org.hamcrest:hamcrest:3.0'
+
 }
 
 test {

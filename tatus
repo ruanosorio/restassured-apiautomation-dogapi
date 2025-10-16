@@ -1,0 +1,7 @@
+[33mc21814e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdesenv-testes[m[33m)[m criando a classe BreedsClient com os metodos GETs da API e a classe DTO para validação do response
+[33m9b72eed[m adicionando primeiro teste e incluindo classe testng.cxml para verificar relatório de execução
+[33m5cf0f40[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/desenv-testes[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m correção erro de digitação
+[33mbedac75[m adicionando as dependencias e configurações do projeto no arquivo build.gradle
+[33mc56a1ea[m README correção nome da api publica
+[33mf216da4[m adicionando o arquivo .gitignore
+[33m84a51b7[m primeiro commit

@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite de Testes API">
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
+    <test name="Testes Funcionais">
+        <packages>
+            <package name="funcional"/>
+        </packages>
+    </test>
+<<<<<<< HEAD
+
+=======
+>>>>>>> e73f80f (criando a classe BreedsClient com os metodos GETs da API e a classe DTO para validação do response)
+</suite>

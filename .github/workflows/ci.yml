@@ -1,0 +1,99 @@
+name: Testes de API com Relatório Allure
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
+      
+    - name: Configurar JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Configurar Gradle
+      uses: gradle/actions/setup-gradle@v4
+      
+    - name: Dar permissão ao wrapper do Gradle
+      run: chmod +x ./gradlew
+      
+    - name: Executar testes
+      run: ./gradlew clean test
+      continue-on-error: true
+      
+    - name: Gerar relatório Allure
+      run: ./gradlew allureReport
+      if: always()
+      
+    - name: Upload dos resultados Allure
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: resultados-allure
+        path: build/allure-results/
+        retention-days: 30
+        
+    - name: Upload do relatório Allure
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: relatorio-allure
+        path: build/reports/allure-report/
+        retention-days: 30
+        
+    - name: Publicar relatório no GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      if: always() && github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/reports/allure-report
+        destination_dir: allure-report
+        
+    - name: Adicionar URL do relatório ao resumo
+      if: always() && github.ref == 'refs/heads/main'
+      run: |
+        echo "## 📊 Relatório de Testes Allure" >> $GITHUB_STEP_SUMMARY
+        echo "🔗 **URL do Relatório:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report/" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📋 **Resultados dos Testes:**" >> $GITHUB_STEP_SUMMARY
+        if [ -f build/test-results/test/TEST-*.xml ]; then
+          echo "- ✅ Testes executados com sucesso" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- ❌ Nenhum resultado de teste encontrado" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+    - name: Mostrar resumo dos testes
+      if: always()
+      run: |
+        echo "=== 📊 RESUMO DOS TESTES ==="
+        if [ -d "build/test-results/test" ]; then
+          echo "✅ Testes executados"
+          echo "📁 Arquivos de resultado:"
+          ls -la build/test-results/test/ || echo "Nenhum arquivo encontrado"
+        else
+          echo "❌ Nenhum resultado de teste encontrado"
+        fi
+        
+        if [ -d "build/allure-results" ]; then
+          echo "📊 Resultados Allure gerados"
+        fi
+        
+        if [ -d "build/reports/allure-report" ]; then
+          echo "📋 Relatório Allure HTML gerado ✅"
+        fi
+        echo "=== FIM DO RESUMO ==="

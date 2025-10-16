@@ -11,7 +11,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class BreedsDTO {
 
-    private Map message;
+    private Object message;
     private String status;
 
 }

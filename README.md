@@ -1,7 +1,7 @@
 # Projeto de Automação de Testes de API com RestAssured
 
 ## Descrição
-Este projeto tem como objetivo realizar testes automatizados de backend na API pública [Dog.Ceo](https://dog.ceo/dog-api/), utilizando uma stack robusta em Java e ferramentas populares do ecossistema de QA.
+Este projeto tem como objetivo realizar testes automatizados de backend na API pública [Dog.Ceo- Dog API](https://dog.ceo/dog-api/), utilizando uma stack robusta em Java e ferramentas populares do ecossistema de QA.
 
 ## Tecnologias Utilizadas
 - Java: Linguagem principal do projeto.

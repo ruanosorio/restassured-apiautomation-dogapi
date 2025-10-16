@@ -15,31 +15,31 @@ permissions:
 jobs:
   testes:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v4
-      
+
     - name: Configurar JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-        
+
     - name: Configurar Gradle
       uses: gradle/actions/setup-gradle@v4
-      
+
     - name: Dar permissão ao wrapper do Gradle
       run: chmod +x ./gradlew
-      
+
     - name: Executar testes
       run: ./gradlew clean test --info
       continue-on-error: true
-      
+
     - name: Gerar relatório Allure
       run: ./gradlew allureReport
       if: always()
-      
+
     - name: Upload dos resultados Allure
       uses: actions/upload-artifact@v4
       if: always()
@@ -47,62 +47,24 @@ jobs:
         name: resultados-allure
         path: build/allure-results/
         retention-days: 30
-        
+
     - name: Publicar relatório Allure
       uses: simple-elf/allure-report-action@master
       if: always()
       with:
         allure_results: build/allure-results
-        allure_report: allure-report
+        allure_report: build/reports/allure-report
         gh_pages: gh-pages
         allure_history: allure-history
         keep_reports: 20
 
-    - name: Adicionar resumo dos testes
+    - name: 🧠 Resumo dos testes no painel do GitHub
       if: always()
       run: |
         echo "## 📊 Relatório de Testes Allure" >> $GITHUB_STEP_SUMMARY
-        
-        # Verificar se existem resultados de teste
-        if [ -d "build/test-results/test" ] && [ "$(ls -A build/test-results/test 2>/dev/null)" ]; then
-          echo "✅ Testes executados com sucesso" >> $GITHUB_STEP_SUMMARY
-          echo "📊 Arquivos de resultado encontrados: $(ls build/test-results/test | wc -l)" >> $GITHUB_STEP_SUMMARY
-        elif [ -d "build/allure-results" ] && [ "$(ls -A build/allure-results 2>/dev/null)" ]; then
-          echo "✅ Testes executados - Resultados Allure gerados" >> $GITHUB_STEP_SUMMARY
-          echo "📊 Arquivos Allure encontrados: $(ls build/allure-results | wc -l)" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ Nenhum resultado de teste encontrado" >> $GITHUB_STEP_SUMMARY
-          echo "🔍 Verificando diretórios..." >> $GITHUB_STEP_SUMMARY
-          echo "- build/test-results/test: $(ls -la build/test-results/test 2>/dev/null || echo 'não existe')" >> $GITHUB_STEP_SUMMARY
-          echo "- build/allure-results: $(ls -la build/allure-results 2>/dev/null || echo 'não existe')" >> $GITHUB_STEP_SUMMARY
-        fi
-        
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📁 **Artefatos Disponíveis:**" >> $GITHUB_STEP_SUMMARY
-        echo "- Resultados Allure (build/allure-results/)" >> $GITHUB_STEP_SUMMARY
-        echo "- Relatório Allure HTML (build/reports/allure-report/)" >> $GITHUB_STEP_SUMMARY
+        echo "📁 Caminho dos resultados: build/allure-results/" >> $GITHUB_STEP_SUMMARY
+        echo "📋 Caminho do relatório: build/reports/allure-report/" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "🔗 **Relatório Online:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "💡 **Para visualizar localmente:** \`./gradlew allureServe\`" >> $GITHUB_STEP_SUMMARY
-        
-    - name: Mostrar resumo dos testes
-      if: always()
-      run: |
-        echo "=== 📊 RESUMO DOS TESTES ==="
-        if [ -d "build/test-results/test" ]; then
-          echo "✅ Testes executados"
-          echo "📁 Arquivos de resultado:"
-          ls -la build/test-results/test/ || echo "Nenhum arquivo encontrado"
-        else
-          echo "❌ Nenhum resultado de teste encontrado"
-        fi
-        
-        if [ -d "build/allure-results" ]; then
-          echo "📊 Resultados Allure gerados"
-        fi
-        
-        if [ -d "build/reports/allure-report" ]; then
-          echo "📋 Relatório Allure HTML gerado ✅"
-        fi
-        echo "=== FIM DO RESUMO ==="

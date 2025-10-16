@@ -56,25 +56,14 @@ jobs:
         path: build/reports/allure-report/
         retention-days: 30
         
-    - name: Publicar relatório no GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      if: always() && github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: build/reports/allure-report
-        destination_dir: allure-report
-        
-    - name: Adicionar URL do relatório ao resumo
-      if: always() && github.ref == 'refs/heads/main'
+    - name: Adicionar resumo dos testes
+      if: always()
       run: |
         echo "## 📊 Relatório de Testes Allure" >> $GITHUB_STEP_SUMMARY
-        echo "🔗 **URL do Relatório:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report/" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📋 **Resultados dos Testes:**" >> $GITHUB_STEP_SUMMARY
         if [ -f build/test-results/test/TEST-*.xml ]; then
-          echo "- ✅ Testes executados com sucesso" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Testes executados com sucesso" >> $GITHUB_STEP_SUMMARY
         else
-          echo "- ❌ Nenhum resultado de teste encontrado" >> $GITHUB_STEP_SUMMARY
+          echo "❌ Nenhum resultado de teste encontrado" >> $GITHUB_STEP_SUMMARY
         fi
         
     - name: Mostrar resumo dos testes
